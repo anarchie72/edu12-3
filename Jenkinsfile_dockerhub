@@ -1,15 +1,15 @@
 def label = "agent-${UUID.randomUUID().toString()}"
 def gitBranch = 'master'
 def docker_registry = "docker.io"  
-def imageName = "shclub/edu12-frontend"
+def imageName = "anarchie72/edu12-frontend"
 def git_ops_name = "edu12-frontend-gitops"
-def P_NAMESPACE = "edu30"
+def P_NAMESPACE = "edu15"
 
 def TAG = getTag(gitBranch)
 
 podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: P_NAMESPACE,
     containers: [
-        containerTemplate(name: 'podman', image: 'ghcr.io/shclub/podman_kustomize:v1', ttyEnabled: true, command: 'cat', privileged: true, alwaysPullImage: true)
+        containerTemplate(name: 'podman', image: 'ghcr.io/anarchie72/podman_kustomize:v1', ttyEnabled: true, command: 'cat', privileged: true, alwaysPullImage: true)
         ,containerTemplate(name: 'jnlp', image: 'jenkins/jnlp-slave:latest-jdk11', args: '${computer.jnlpmac} ${computer.name}')
     ],
     volumes: [
@@ -23,8 +23,8 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: P_NAMESPAC
        stage('Clone Git Project') {
             sh "pwd"
             echo 'Clone'
-            git branch: 'master', credentialsId: 'github_ci', url: 'https://github.com/shclub/edu12-3.git'
-            sh "ls"
+            git branch: 'master', credentialsId: 'github_ci', url: 'https://github.com/anarchie72/edu12-3.git'
+            sh "ls"a
         }
                      
       stage('Podman Build & Image Push ') {
@@ -50,7 +50,7 @@ podTemplate(label: label, serviceAccount: 'jenkins-admin', namespace: P_NAMESPAC
                         cd ${git_ops_name}
                         git checkout HEAD
                         kustomize edit set image ${imageName}:${TAG}
-                        git config --global user.email "shclub@gmail.com"
+                        git config --global user.email "anarchie72@gmail.com"
                         git config --global user.name ${USERNAME}
                         git add .
                         git commit -am 'update image tag  ${TAG} from My_Jenkins'
