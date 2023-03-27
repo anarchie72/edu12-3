@@ -1,7 +1,7 @@
 #
 # Build stage
 #
-FROM ghcr.io/shclub/node:14.19.3-alpine as build
+FROM ghcr.io/anarchie72/node:14.19.3-alpine as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
@@ -19,7 +19,7 @@ RUN npm run build
 # Package stage
 #
 # production environment
-FROM ghcr.io/shclub/nginx:stable-alpine
+FROM ghcr.io/anarchie72/nginx:stable-alpine
 
 ENV TZ Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
